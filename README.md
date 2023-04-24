@@ -5,3 +5,10 @@
 - You can change the IP to your internet if you want to connect locally
 
 Enjoy :)
+
+You will need the following libraries:
+- socket
+- tkinter
+- threading
+- urllib
+- customtkinter
