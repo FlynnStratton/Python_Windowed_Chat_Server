@@ -12,3 +12,4 @@ You will need the following libraries:
 - threading
 - urllib
 - customtkinter
+- Pillow
