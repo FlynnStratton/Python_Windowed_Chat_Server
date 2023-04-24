@@ -2,7 +2,7 @@ import socket
 import threading
 import tkinter
 from tkinter import *
-
+from customtkinter import *
 
 host = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
@@ -21,8 +21,8 @@ def universal():
     # port = [port of your choice]
     port = 80
 
-    messages = Listbox(window, width=200, height=40, fg='black', background='light grey')
-    messages.pack()
+    messages = CTkTextbox(window, width=1000, height=800)
+    messages.place(relx=0.5, rely=0.375, anchor=CENTER)
     host.bind((hostip, port))
     messages.insert(END, f"Server online, host address [{hostip}], port [{port}]")
     host.listen()
@@ -57,7 +57,7 @@ def universal():
         def recieve():
             while True:
                 address, addr = host.accept()
-                messages.insert(END, f'{str(address)} has connected')
+                messages.insert(END, '\n'+f'{str(address)} has connected')
                 address.send('name'.encode())
                 messages.insert(END, 'code sent')
                 username = address.recv(1024).decode()
@@ -85,4 +85,3 @@ def universal():
 
 threading.Thread(target=universal, daemon=True).start()
 window.mainloop()
-
