@@ -7,10 +7,11 @@ import urllib
 from urllib.request import Request, urlopen
 from PIL import ImageTk
 #from PIL import Image
+from customtkinter import *
 
 
-window = tkinter.Tk()
-window.geometry('1920x1080')
+window = CTk()
+window.geometry('600x300')
 window.title('Tkinter Chat Server')
 
 req = Request(
@@ -46,12 +47,13 @@ def server():
     # os.close(1)
 
     def main():
+        window.geometry('1920x1080')
 
-        messages = Listbox(window, width=200, height=30, fg='black', background='light grey')
-        messages.pack()
+        messages = CTkTextbox(window, width=1000, height=800)
+        messages.place(relx=0.5, rely=0.375, anchor=CENTER)
 
-        message = Text(window, width=50, height=1, background='light grey')
-        message.pack(padx=10, pady=10)
+        message = CTkEntry(window, width=200, height=10)
+        message.place(relx=0.5, rely=0.9, anchor=CENTER)
 
         def recieve():
             # username = input('Enter username : ')
@@ -70,7 +72,7 @@ def server():
                     # username = input('Enter username : ')
 
                     else:
-                        messages.insert(END, msg)
+                        messages.insert(END, '\n'+msg)
 
 
                 except:
@@ -89,7 +91,7 @@ def server():
                 sends()
 
             def __send__():
-                msg = message.get('1.0', 'end-1c')
+                msg = message.get()
                 s.send(msg.encode())
                 destroy_b()
 
@@ -97,11 +99,11 @@ def server():
                 s.close()
                 os.close(1)
 
-            send_message = Button(window, text='Send', command=__send__)
-            send_message.pack()
+            send_message = CTkButton(window, text='Send', command=__send__, width=50)
+            send_message.place(relx=0.4, rely=0.9, anchor=CENTER)
 
-            leave = Button(window, text='Leave', command=leave_chat)
-            leave.pack(padx=10)
+            leave = CTkButton(window, text='Leave', command=leave_chat, width=50)
+            leave.place(relx=0.6, rely=0.9, anchor=CENTER)
 
         send_thread = threading.Thread(target=sends, )
         send_thread.start()
@@ -112,12 +114,12 @@ def server():
     def users():
 
         yes_name = s.recv(1024).decode()
-        username = Text(window, width=100, height=1)
-        username.pack()
+        username = CTkEntry(window, width=300)
+        username.place(relx=0.5, rely=0.1, anchor=CENTER)
 
         def get_username():
             global user
-            user = username.get('1.0', 'end-1c')
+            user = username.get()
             if yes_name == 'name':
                 s.send(user.encode())
 
@@ -129,8 +131,8 @@ def server():
             send_username.destroy()
             main()
 
-        send_username = Button(window, text='Join', command=get_username)
-        send_username.pack()
+        send_username = CTkButton(window, text='Join', command=get_username)
+        send_username.place(relx=0.5, rely=0.2, anchor=CENTER)
 
     users()
     #window.mainloop()
